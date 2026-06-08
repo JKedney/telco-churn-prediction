@@ -17,6 +17,12 @@ Python · pandas · scikit-learn · FastAPI · pytest
 - `src/` — pipeline and API code
 - `tests/` — unit tests
 
+## Live demo
+- API: https://telco-churn-prediction-lhdg.onrender.com
+- Interactive docs: https://telco-churn-prediction-lhdg.onrender.com/docs
+
+_Hosted on Render's free tier — the first request after a period of inactivity may take ~30–60 seconds while the service wakes up._
+
 ## How to run locally
 ```pip install -r requirements.txt```
 _More steps to follow once there's something to run._
