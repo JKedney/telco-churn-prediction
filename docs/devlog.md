@@ -7,3 +7,7 @@
 **Done:** Built a minimal FastAPI app (/health + dummy /predict), verified locally via /docs, deployed to Render's free tier from main. App is live.
 **Key findings / decisions:** Render appended a suffix to the URL because the plain name was taken — real URL is telco-churn-prediction-lhdg.onrender.com. Free tier cold-starts after inactivity (noted in README).
 **Next:** Session 5 — clean the data (convert TotalCharges to numeric, fill the 11 tenure-0 blanks with 0) and build the preprocessing pipeline in src/.
+## Session 6 — 2026-06-10 — Baseline model
+**Done:** Built src/baseline_model.py — loads/cleans the data, does an 80/20 stratified train/test split, and trains a LogisticRegression inside a sklearn pipeline (StandardScaler + OneHotEncoder via ColumnTransformer). Also re-added preprocessing.py, which had gone missing from the branch.
+**Baseline metrics (test set):** churn-class precision 0.66, recall 0.56, F1 0.60; ROC AUC 0.842; accuracy 0.81 (inflated by class imbalance). Weak spot: catches only 56% of churners.
+**Next:** Session 7 — stronger model (gradient-boosted trees); beat the baseline on churn recall/F1 and AUC.
