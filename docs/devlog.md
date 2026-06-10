@@ -6,4 +6,7 @@
 ## Session 4 — 2026-06-08 — API skeleton + deployment
 **Done:** Built a minimal FastAPI app (/health + dummy /predict), verified locally via /docs, deployed to Render's free tier from main. App is live.
 **Key findings / decisions:** Render appended a suffix to the URL because the plain name was taken — real URL is telco-churn-prediction-lhdg.onrender.com. Free tier cold-starts after inactivity (noted in README).
-**Next:** Session 5 — clean the data (convert TotalCharges to numeric, fill the 11 tenure-0 blanks with 0) and build the preprocessing pipeline in src/.
+## Session 5 — 2026-06-08 — Data cleaning function
+**Done:** Built src/preprocessing.py with load_data() and clean_data(). clean_data converts TotalCharges to numeric and fills the 11 tenure-0 blanks with 0, drops customerID, and maps Churn to 1/0. Verified: 7043 × 20, no missing TotalCharges, Churn as 0/1.
+**Key findings / decisions:** Kept encoding/scaling out of this function — those go in the model pipeline so the API transforms new data identically to training.
+**Next:** Session 6 — train/test split and a baseline model.
