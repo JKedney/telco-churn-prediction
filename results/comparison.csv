@@ -1,0 +1,8 @@
+experiment,threshold,precision,recall,f1,auc
+Logistic Regression (baseline),0.5,0.657,0.559,0.604,0.842
+logreg + class weight,0.5,0.504,0.783,0.614,0.842
+Gradient Boosting,0.5,0.625,0.529,0.573,0.833
+"Tuned LogReg (C=10, cw=None)",0.5,0.655,0.559,0.603,0.841
+Feature Engineering logreg,0.5,0.504,0.783,0.614,0.842
+Baseline @ threshold 0.4,0.4,0.568,0.668,0.614,0.842
+Baseline @ threshold 0.3,0.3,0.519,0.754,0.615,0.842

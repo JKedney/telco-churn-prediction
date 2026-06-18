@@ -10,4 +10,7 @@
 ## Session 6 — 2026-06-10 — Baseline model
 **Done:** Built src/baseline_model.py — loads/cleans the data, does an 80/20 stratified train/test split, and trains a LogisticRegression inside a sklearn pipeline (StandardScaler + OneHotEncoder via ColumnTransformer). Also re-added preprocessing.py, which had gone missing from the branch.
 **Baseline metrics (test set):** churn-class precision 0.66, recall 0.56, F1 0.60; ROC AUC 0.842; accuracy 0.81 (inflated by class imbalance). Weak spot: catches only 56% of churners.
-**Next:** Session 7 — stronger model (gradient-boosted trees); beat the baseline on churn recall/F1 and AUC.
+## Session 7 — 2026-06-18 — Model comparison and selection
+**Done:** Built a modular experiment framework (experiment_utils.py + experiments.py): a shared split/preprocessor/evaluator plus one function per experiment. Compared baseline LogReg, class_weight, gradient boosting, tuned LogReg (GridSearchCV), feature engineering, and threshold variants. Saved results to results/comparison.csv and the chosen model to models/churn_model.joblib.
+**Key findings:** AUC capped ~0.842 across all logistic variants (dataset ceiling). Tuning and feature engineering gave no gain; gradient boosting slightly worse. Only the precision/recall operating point (via class_weight or threshold) moved meaningfully. Chose baseline LogReg at threshold 0.3 (recall 0.82, precision 0.52) — prioritising catching churners.
+**Next:** Session 8 — wire the saved model into the API at threshold 0.3, and write tests.
