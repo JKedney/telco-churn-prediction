@@ -13,6 +13,12 @@ def clean_data(df):
     df = df.drop(columns=["customerID"])
     return df
 
+def engineer_features(df):
+    df = df.copy()
+    df["charges_per_month"] = df["TotalCharges"] / df["tenure"].replace(0, 1)
+    service_cols = ["OnlineSecurity", "OnlineBackup", "DeviceProtection", "TechSupport", "StreamingTV", "StreamingMovies"]
+    df["num_services"] = (df[service_cols] == "Yes").sum(axis=1)
+    return df
 
 if __name__ == "__main__":
     raw = load_data("data/WA_Fn-UseC_-Telco-Customer-Churn.csv")

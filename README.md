@@ -28,7 +28,9 @@ _Hosted on Render's free tier — the first request after a period of inactivity
 _More steps to follow once there's something to run._
 
 ## Results
-_Model performance and key metrics. (Fill in after modelling.)_
+Several models were compared (full table in `results/comparison.csv`). All logistic-regression variants plateaued at ROC AUC ≈ 0.842 — the dataset's ceiling. Gradient boosting was slightly behind, and hyperparameter tuning and feature engineering gave no meaningful gain.
+
+The chosen model is a logistic regression used at a decision threshold of **0.3**, prioritising recall: it catches ~82% of churners (recall 0.82) at precision 0.52. This trade favours catching at-risk customers, on the basis that retention outreach is cheap relative to losing a customer.
 
 ## Next steps
 _What you'd improve with more time._
