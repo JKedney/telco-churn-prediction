@@ -16,4 +16,7 @@
 ## Session 8 — 2026-06-25 — Wire model into API + tests
 **Done:** Replaced the dummy /predict with the real model: loads churn_model.joblib at startup, accepts all 19 features (Pydantic validation), returns Yes/No at threshold 0.3 plus probability. Verified locally (high-risk customer 0.61 → Yes, loyal customer 0.03 → No). Wrote pytest tests in tests/test_api.py: health check, valid-prediction shape, and malformed-input rejection (422). All 3 pass.
 **Key findings / decisions:** TestClient needs httpx (added to requirements). Tests assert response *shape*, not exact labels, to avoid brittleness.
-**Next:** Session 9 — Streamlit front-end + write the README properly.
+## Session 9 — 2026-06-25 — Streamlit app + README
+**Done:** Built app.py, a Streamlit front-end with a form for all 19 features that loads the model directly and shows a colour-coded churn prediction at threshold 0.3. Verified high-risk vs loyal customers predict differently. Wrote the full README: live links, approach, results, testing, structure, run instructions.
+**Key findings / decisions:** Streamlit app loads the model directly rather than calling the API — simpler and more robust for a demo, and the API remains a standalone deliverable.
+**Next:** Session 10 — deploy the Streamlit app, fill in its README link, polish the repo, final CV write-up.
