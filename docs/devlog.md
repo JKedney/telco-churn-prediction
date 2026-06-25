@@ -13,4 +13,7 @@
 ## Session 7 — 2026-06-18 — Model comparison and selection
 **Done:** Built a modular experiment framework (experiment_utils.py + experiments.py): a shared split/preprocessor/evaluator plus one function per experiment. Compared baseline LogReg, class_weight, gradient boosting, tuned LogReg (GridSearchCV), feature engineering, and threshold variants. Saved results to results/comparison.csv and the chosen model to models/churn_model.joblib.
 **Key findings:** AUC capped ~0.842 across all logistic variants (dataset ceiling). Tuning and feature engineering gave no gain; gradient boosting slightly worse. Only the precision/recall operating point (via class_weight or threshold) moved meaningfully. Chose baseline LogReg at threshold 0.3 (recall 0.82, precision 0.52) — prioritising catching churners.
-**Next:** Session 8 — wire the saved model into the API at threshold 0.3, and write tests.
+## Session 8 — 2026-06-25 — Wire model into API + tests
+**Done:** Replaced the dummy /predict with the real model: loads churn_model.joblib at startup, accepts all 19 features (Pydantic validation), returns Yes/No at threshold 0.3 plus probability. Verified locally (high-risk customer 0.61 → Yes, loyal customer 0.03 → No). Wrote pytest tests in tests/test_api.py: health check, valid-prediction shape, and malformed-input rejection (422). All 3 pass.
+**Key findings / decisions:** TestClient needs httpx (added to requirements). Tests assert response *shape*, not exact labels, to avoid brittleness.
+**Next:** Session 9 — Streamlit front-end + write the README properly.
