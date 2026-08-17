@@ -6,7 +6,7 @@ from pydantic import BaseModel
 app = FastAPI(title = "Telco Churn Prediction")
 
 model = joblib.load("models/churn_model.joblib")
-Threshold = 0.3
+Threshold = 0.35
 
 @app.get("/health")
 def health():

@@ -22,10 +22,20 @@ Python · pandas · scikit-learn · FastAPI · Streamlit · pytest · Render
 
 
 ## Results
-All logistic-regression variants plateaued at ROC AUC ≈ 0.842 — the dataset's ceiling. Hyperparameter tuning gave no meaningful gain, gradient boosting was slightly behind (AUC 0.833), and feature engineering produced an identical result to the class-weighted model: the two derived features (`charges_per_month`, `num_services`) reached the model but were assigned near-zero weight, being largely derivable from existing columns.
+All logistic-regression variants plateaued at ROC AUC ≈ 0.84 — the dataset's ceiling. Hyperparameter tuning gave no meaningful gain, gradient boosting was slightly behind (AUC 0.833), and feature engineering produced an identical result to the class-weighted model: the two derived features reached the model but were assigned near-zero weight, being largely derivable from existing columns.
 
-The final model is a logistic regression used at a decision threshold of **0.3**, deliberately prioritising recall over precision: it catches ~75% of churners (recall 0.754) at precision 0.519, versus 0.559 recall at the default 0.5 threshold. This trade favours identifying at-risk customers, on the reasoning that retention outreach is cheap relative to losing a customer.
-Full comparison in [`results/comparison.csv`](results/comparison.csv).
+**Model selection and threshold.** The data was split 60/20/20 into training, validation and test sets. The decision threshold was chosen on the **validation** set (F1 peaked at 0.35), and the final model was then evaluated **once** on the untouched test set:
+
+| Metric | Test-set value |
+|---|---|
+| Precision (churn) | 0.545 |
+| Recall (churn) | 0.711 |
+| F1 (churn) | 0.617 |
+| ROC AUC | 0.843 |
+
+The threshold of 0.35 sits below the naive 0.5, trading precision for recall — catching ~71% of churners rather than ~54% at the default. This favours identifying at-risk customers, on the reasoning that retention outreach is cheap relative to losing a customer.
+
+Full model comparison in [`results/comparison.csv`](results/comparison.csv).
 
 ## Testing
 API tested with pytest (`tests/test_api.py`): health check, prediction response shape, and rejection of malformed input.
