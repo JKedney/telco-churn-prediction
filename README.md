@@ -20,10 +20,12 @@ Python · pandas · scikit-learn · FastAPI · Streamlit · pytest · Render
 3. **Modelling** — compared logistic regression, gradient boosting, hyperparameter tuning, feature engineering and threshold adjustment in a modular experiment framework (results in `results/comparison.csv`).
 4. **Serving** — the chosen model is wrapped in a scikit-learn pipeline (so preprocessing and prediction stay consistent) and exposed via API and web app.
 
-## Results
-All logistic-regression variants plateaued at ROC AUC ≈ 0.842 — the dataset's ceiling. Tuning and feature engineering gave no meaningful gain, and gradient boosting was slightly behind.
 
-The final model is a logistic regression used at a decision threshold of **0.3**, deliberately prioritising recall: it catches ~82% of churners (recall 0.82) at precision 0.52. This favours identifying at-risk customers, on the reasoning that retention outreach is cheap relative to losing a customer.
+## Results
+All logistic-regression variants plateaued at ROC AUC ≈ 0.842 — the dataset's ceiling. Hyperparameter tuning gave no meaningful gain, gradient boosting was slightly behind (AUC 0.833), and feature engineering produced an identical result to the class-weighted model: the two derived features (`charges_per_month`, `num_services`) reached the model but were assigned near-zero weight, being largely derivable from existing columns.
+
+The final model is a logistic regression used at a decision threshold of **0.3**, deliberately prioritising recall over precision: it catches ~75% of churners (recall 0.754) at precision 0.519, versus 0.559 recall at the default 0.5 threshold. This trade favours identifying at-risk customers, on the reasoning that retention outreach is cheap relative to losing a customer.
+Full comparison in [`results/comparison.csv`](results/comparison.csv).
 
 ## Testing
 API tested with pytest (`tests/test_api.py`): health check, prediction response shape, and rejection of malformed input.
