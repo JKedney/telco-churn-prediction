@@ -29,3 +29,8 @@ def test_predict_rejects_invalid_data():
     bad_customer = {"gender": "Female", "tenure": "not a number"}
     response = client.post("/predict", json=bad_customer)
     assert response.status_code == 422
+
+def test_predict_high_risk_customer_returns_yes():
+    response = client.post("/predict", json=VALID_CUSTOMER)
+    assert response.status_code == 200
+    assert response.json()["churn"] == "Yes"

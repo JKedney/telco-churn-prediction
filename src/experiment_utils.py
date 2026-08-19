@@ -30,5 +30,5 @@ def build_preprocessor(x):
 
 def evalute (name, model, x_test, y_test, threshold = 0.5):
     y_proba = model.predict_proba(x_test)[:, 1]
-    y_pred = (y_proba > threshold).astype(int)
+    y_pred = (y_proba >= threshold).astype(int)
     return {"experiment": name,"threshold": threshold,"precision": round(precision_score(y_test, y_pred), 3),"recall": round(recall_score(y_test, y_pred), 3),"f1": round(f1_score(y_test, y_pred), 3),"auc": round(roc_auc_score(y_test, y_proba), 3),}
