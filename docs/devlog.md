@@ -20,3 +20,7 @@
 **Done:** Built app.py, a Streamlit front-end with a form for all 19 features that loads the model directly and shows a colour-coded churn prediction at threshold 0.3. Verified high-risk vs loyal customers predict differently. Wrote the full README: live links, approach, results, testing, structure, run instructions.
 **Key findings / decisions:** Streamlit app loads the model directly rather than calling the API — simpler and more robust for a demo, and the API remains a standalone deliverable.
 **Next:** Session 10 — deploy the Streamlit app, fill in its README link, polish the repo, final CV write-up.
+
+## Session 11 — Review fixes
+**Done:** Reconciled README metrics against results (README had overstated recall). Confirmed the feature-engineering null result was genuine, not a bug — the two derived features reached the model (47 vs 45 coefficients) but were assigned near-zero weight. Replaced ad-hoc threshold selection with a proper 60/20/20 split: threshold chosen on validation (F1 peaked at 0.35), then evaluated once on the untouched test set. Fixed function-name typos, made the threshold comparison consistent between evaluation and API, made the model path file-relative, trimmed requirements to direct dependencies, renamed response keys to snake_case, added a known-prediction test and three example payloads.
+**Key findings / decisions:** The original 0.3 threshold was selected on test data — mild leakage. Validated selection gives 0.35, with honest test metrics: precision 0.545, recall 0.711, F1 0.617, AUC 0.843.

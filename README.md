@@ -55,3 +55,19 @@ pip install -r requirements.txt
 uvicorn src.main:app --reload      # API at http://127.0.0.1:8000/docs
 streamlit run app.py               # web app at http://localhost:8501
 ```
+## Trying the API
+
+Three ready-made customer profiles are in [`examples/`]so you can test the service without hand-building a payload:
+
+| File | Profile | Result |
+|---|---|---|
+| `Customer_1.json` | 1 month tenure, month-to-month, electronic check | churn **Yes** (p = 0.614) |
+| `Customer_2.json` | 72 months, two-year contract, full add-ons | churn **No** (p = 0.030) |
+| `Customer_3.json` | 24 months, one-year contract | churn **No** (p = 0.345) — just under the threshold |
+
+curl -X POST https://telco-churn-prediction-lhdg.onrender.com/predict -H "Content-Type: application/json" -d @examples/Customer_1.json
+
+Customer_3 sits deliberately close to the decision boundary: at p = 0.345 against a threshold of 0.35 it's labelled "No", but it's barely distinguishable from one labelled "Yes" — which is why the probability is more informative than the binary label.
+
+## Development log
+[Session-by-session decisions and findings](docs/devlog.md) — the reasoning behind each stage of the project.

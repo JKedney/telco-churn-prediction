@@ -23,7 +23,7 @@ def test_predict_returns_valid_response():
     assert response.status_code == 200
     body = response.json()
     assert body["churn"] in ["Yes", "No"]
-    assert 0.0 <= body["Churn probability"] <= 1.0
+    assert 0.0 <= body["churn_probability"] <= 1.0
 
 def test_predict_rejects_invalid_data():
     bad_customer = {"gender": "Female", "tenure": "not a number"}
