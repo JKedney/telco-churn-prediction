@@ -20,10 +20,22 @@ Python · pandas · scikit-learn · FastAPI · Streamlit · pytest · Render
 3. **Modelling** — compared logistic regression, gradient boosting, hyperparameter tuning, feature engineering and threshold adjustment in a modular experiment framework (results in `results/comparison.csv`).
 4. **Serving** — the chosen model is wrapped in a scikit-learn pipeline (so preprocessing and prediction stay consistent) and exposed via API and web app.
 
-## Results
-All logistic-regression variants plateaued at ROC AUC ≈ 0.842 — the dataset's ceiling. Tuning and feature engineering gave no meaningful gain, and gradient boosting was slightly behind.
 
-The final model is a logistic regression used at a decision threshold of **0.3**, deliberately prioritising recall: it catches ~82% of churners (recall 0.82) at precision 0.52. This favours identifying at-risk customers, on the reasoning that retention outreach is cheap relative to losing a customer.
+## Results
+All logistic-regression variants plateaued at ROC AUC ≈ 0.84 — the dataset's ceiling. Hyperparameter tuning gave no meaningful gain, gradient boosting was slightly behind (AUC 0.833), and feature engineering produced an identical result to the class-weighted model: the two derived features reached the model but were assigned near-zero weight, being largely derivable from existing columns.
+
+**Model selection and threshold.** The data was split 60/20/20 into training, validation and test sets. The decision threshold was chosen on the **validation** set (F1 peaked at 0.35), and the final model was then evaluated **once** on the untouched test set:
+
+| Metric | Test-set value |
+|---|---|
+| Precision (churn) | 0.545 |
+| Recall (churn) | 0.711 |
+| F1 (churn) | 0.617 |
+| ROC AUC | 0.843 |
+
+The threshold of 0.35 sits below the naive 0.5, trading precision for recall — catching ~71% of churners rather than ~54% at the default. This favours identifying at-risk customers, on the reasoning that retention outreach is cheap relative to losing a customer.
+
+Full model comparison in [`results/comparison.csv`](results/comparison.csv).
 
 ## Testing
 API tested with pytest (`tests/test_api.py`): health check, prediction response shape, and rejection of malformed input.
@@ -43,3 +55,19 @@ pip install -r requirements.txt
 uvicorn src.main:app --reload      # API at http://127.0.0.1:8000/docs
 streamlit run app.py               # web app at http://localhost:8501
 ```
+## Trying the API
+
+Three ready-made customer profiles are in [`examples/`]so you can test the service without hand-building a payload:
+
+| File | Profile | Result |
+|---|---|---|
+| `Customer_1.json` | 1 month tenure, month-to-month, electronic check | churn **Yes** (p = 0.614) |
+| `Customer_2.json` | 72 months, two-year contract, full add-ons | churn **No** (p = 0.030) |
+| `Customer_3.json` | 24 months, one-year contract | churn **No** (p = 0.345) — just under the threshold |
+
+curl -X POST https://telco-churn-prediction-lhdg.onrender.com/predict -H "Content-Type: application/json" -d @examples/Customer_1.json
+
+Customer_3 sits deliberately close to the decision boundary: at p = 0.345 against a threshold of 0.35 it's labelled "No", but it's barely distinguishable from one labelled "Yes" — which is why the probability is more informative than the binary label.
+
+## Development log
+[Session-by-session decisions and findings](docs/devlog.md) — the reasoning behind each stage of the project.

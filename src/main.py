@@ -2,11 +2,13 @@ import joblib
 import pandas as pd
 from fastapi import FastAPI
 from pydantic import BaseModel
+from pathlib import Path
 
 app = FastAPI(title = "Telco Churn Prediction")
 
-model = joblib.load("models/churn_model.joblib")
-Threshold = 0.3
+model_path = Path(__file__).parent.parent / "models" / "churn_model.joblib"
+model = joblib.load(model_path)
+THRESHOLD = 0.35
 
 @app.get("/health")
 def health():
@@ -37,7 +39,7 @@ class Customer(BaseModel):
 def predict(customer: Customer):
     data = pd.DataFrame([customer.model_dump()])
     proba = model.predict_proba(data)[0, 1]
-    prediction = "Yes" if proba >= Threshold else "No"
-    return {"churn": prediction, "Churn probability": round(float(proba), 3), "Threshold": Threshold,}
+    prediction = "Yes" if proba >= THRESHOLD else "No"
+    return {"churn": prediction, "churn_probability": round(float(proba), 3), "threshold": THRESHOLD,}
             
             

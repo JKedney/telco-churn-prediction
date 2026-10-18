@@ -3,7 +3,7 @@ import pandas as pd
 import streamlit as st
 
 model = joblib.load("models/churn_model.joblib")
-THRESHOLD = 0.3
+THRESHOLD = 0.35
 
 st.title("Telco Customer Churn Predictor")
 st.write("Enter a customer's details to estimate their likelihood of churning.")

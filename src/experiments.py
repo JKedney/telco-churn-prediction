@@ -68,4 +68,4 @@ if __name__ == "__main__":
     print("\nSaved to results/comparison.csv")
     os.makedirs("models", exist_ok=True)
     joblib.dump(base_model, "models/churn_model.joblib")
-    print("Saved model to models/churn_model.joblib (use at threshold 0.3)")
+    print("Saved model to models/churn_model.joblib (use at threshold 0.35)")
